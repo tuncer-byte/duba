@@ -1,8 +1,8 @@
 import { Platform } from 'react-native';
-import { ENABLE_DEMO, PREMIUM } from '@/config';
+import { PREMIUM } from '@/config';
 
 /* RevenueCat sarmalayıcısı. SDK yalnızca gerçek (dev/production) yapılarda ve anahtar tanımlıysa devreye girer.
-   Expo Go, web veya anahtarsız ortamda "kullanılamaz" döner; ENABLE_DEMO açıkken test satın alma çalışır. */
+   Expo Go, web veya anahtarsız ortamda "kullanılamaz" döner. */
 
 type PurchasesModule = typeof import('react-native-purchases').default;
 let P: PurchasesModule | null = null;
@@ -11,7 +11,6 @@ let ready = false;
 export type BuyResult = 'ok' | 'cancel' | 'unavailable' | 'error';
 
 export function purchasesLive() { return ready; }
-export function testPurchaseEnabled() { return !ready && ENABLE_DEMO; }
 
 export async function initPurchases(): Promise<void> {
   if (ready || Platform.OS === 'web') return;

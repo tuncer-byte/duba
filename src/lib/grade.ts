@@ -1,5 +1,5 @@
 import { COURSES } from '@/data/courses';
-import { questionById, seededShuffle } from '@/data/questions';
+import { questionById } from '@/data/questions';
 import { POINTS_PER_QUESTION, type Answers, type Attempt, type CourseId, type ExamSet } from '@/data/types';
 
 export function gradeAttempt(exam: Pick<ExamSet, 'id' | 'title' | 'questionIds'>, answers: Answers, durationSec: number, at = Date.now()): Attempt {
@@ -52,20 +52,3 @@ export function courseAccuracy(attempts: Attempt[]): Record<CourseId, { correct:
 }
 
 export const sortedAttempts = (attempts: Attempt[]) => [...attempts].sort((a, b) => a.at - b.at);
-
-/** Demo: tasarımdaki gelişimi (28→41 doğru) üretir. */
-export function makeDemoAttempts(exams: ExamSet[], now = new Date()): Attempt[] {
-  const targets = [28, 31, 33, 36, 38, 41];
-  const pick = exams.filter((e) => e.kind === 'cikmis').slice(1, 7).reverse(); // Eylül'e kadar, Ekim çözülmemiş kalır
-  return pick.map((exam, i) => {
-    const order = seededShuffle(exam.questionIds, 100 + i);
-    const want = targets[i];
-    const answers: Answers = {};
-    order.forEach((qid, k) => {
-      const q = questionById(qid)!;
-      answers[qid] = k < want ? q.answer : (q.answer + 1) % 4;
-    });
-    const at = new Date(now.getFullYear(), now.getMonth() - (pick.length - i), 24, 18, 30).getTime();
-    return gradeAttempt(exam, answers, 38 * 60 - i * 60, at);
-  });
-}

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { TextInput, View } from 'react-native';
 import { Button, Chip, Sheet, T } from '@/components/ui';
-import { ENABLE_DEMO } from '@/config';
 import { addDays, toISO, useApp } from '@/store/app';
 import { colors, fonts } from '@/theme';
 
@@ -26,7 +25,7 @@ export function parseDate(txt: string): string | null {
 
 export function ProfileSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const router = useRouter();
-  const { profile, setProfile, loadDemo, resetAll } = useApp();
+  const { profile, setProfile, resetAll } = useApp();
   const [name, setName] = useState(profile.name);
   const [date, setDate] = useState(fmtDate(profile.examDate));
   const [confirmReset, setConfirmReset] = useState(false);
@@ -64,7 +63,6 @@ export function ProfileSheet({ visible, onClose }: { visible: boolean; onClose: 
       />
       <View style={{ gap: 8, marginTop: 4 }}>
         <Button kind="soft" label="Ayarlar ve hakkında" onPress={() => { onClose(); router.push('/ayarlar'); }} />
-        {ENABLE_DEMO && <Button kind="soft" label="Demo verisini yükle" onPress={() => { loadDemo(); onClose(); }} />}
         <Button
           kind="outline" label={confirmReset ? 'Emin misin? Tüm veriler silinir' : 'Verilerimi sıfırla'}
           onPress={() => { if (confirmReset) { resetAll(); onClose(); } else setConfirmReset(true); }}

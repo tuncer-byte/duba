@@ -7,7 +7,7 @@ import { Mascot } from '@/components/Mascot';
 import { Button, Screen, T } from '@/components/ui';
 import { PREMIUM } from '@/config';
 import { freeStatus } from '@/lib/premium';
-import { buyPremium, restorePremium, storePrice, testPurchaseEnabled } from '@/lib/purchases';
+import { buyPremium, restorePremium, storePrice } from '@/lib/purchases';
 import { useApp } from '@/store/app';
 import { colors, fonts } from '@/theme';
 
@@ -35,7 +35,6 @@ export default function PremiumScreen() {
   const insets = useSafeAreaInsets();
   const st = freeStatus(seen);
   const c = COPY[reason ?? 'default'] ?? COPY.default;
-  const test = testPurchaseEnabled();
 
   useEffect(() => { storePrice().then((p) => p && setPrice(p)); }, []);
 
@@ -43,7 +42,6 @@ export default function PremiumScreen() {
 
   const buy = async () => {
     setBusy(true); setMsg(null);
-    if (test) { setPremium(true); setBusy(false); return; }
     const r = await buyPremium();
     setBusy(false);
     if (r === 'ok') setPremium(true);
@@ -106,7 +104,7 @@ export default function PremiumScreen() {
           <T v="caption" color={colors.mute}>Tek seferlik ödeme · ömür boyu</T>
         </View>
         {msg && <T v="caption" color={colors.red} style={{ textAlign: 'center' }}>{msg}</T>}
-        <Button label={busy ? 'İşleniyor…' : test ? 'Premium\'a geç (test)' : 'Premium\'a geç'} onPress={buy} disabled={busy} />
+        <Button label={busy ? 'İşleniyor…' : 'Premium\'a geç'} onPress={buy} disabled={busy} />
         <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 22 }}>
           <Pressable onPress={restore} accessibilityRole="button" hitSlop={8}><T v="small" color={colors.primary} style={{ fontFamily: fonts.bodySemi }}>Satın alımı geri yükle</T></Pressable>
           <Pressable onPress={done} accessibilityRole="button" hitSlop={8}><T v="small" color={colors.mute}>Şimdilik değil</T></Pressable>

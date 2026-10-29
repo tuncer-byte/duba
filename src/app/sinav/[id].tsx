@@ -34,7 +34,9 @@ export default function ExamRunner() {
   const [i, setI] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [flags, setFlags] = useState<Record<string, boolean>>({});
-  const [learning, setLearning] = useState(true);
+  // Deneme/set sınavlarında cevaplar anında gösterilmez; sonuç ve açıklamalar sınav bitince görülür.
+  const isExam = /^(deneme|cm-|set-)/.test(String(id));
+  const [learning, setLearning] = useState(!isExam);
   const [nav, setNav] = useState(false);
   const [quit, setQuit] = useState(false);
   const startedAt = useRef(Date.now());
@@ -119,10 +121,12 @@ export default function ExamRunner() {
           )}
         </View>
         <Bar value={(i + 1) / total} height={8} />
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 12 }}>
-          <T v="bodyStrong">Öğrenme modu</T>
-          <Switch value={learning} onValueChange={setLearning} trackColor={{ true: colors.green, false: '#CBD5D3' }} thumbColor="#fff" />
-        </View>
+        {isExam ? <View style={{ height: 4 }} /> : (
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 12 }}>
+            <T v="bodyStrong">Öğrenme modu</T>
+            <Switch value={learning} onValueChange={setLearning} trackColor={{ true: colors.green, false: '#CBD5D3' }} thumbColor="#fff" />
+          </View>
+        )}
       </View>
       <View style={{ height: 1, backgroundColor: colors.border }} />
 

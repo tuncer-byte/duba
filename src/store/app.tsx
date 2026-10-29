@@ -1,8 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { buildPastExamSets } from '@/data/exams';
 import type { Attempt } from '@/data/types';
-import { makeDemoAttempts } from '@/lib/grade';
 
 export interface Profile {
   name: string;
@@ -37,8 +35,7 @@ interface Ctx extends Persisted {
   removeSaved: (id: string) => void;
   setPremium: (v: boolean) => void;
   markSeen: (id: string) => void;
-  loadDemo: () => void;
-  resetAll: () => void;
+    resetAll: () => void;
 }
 
 const AppCtx = createContext<Ctx>(null as unknown as Ctx);
@@ -75,20 +72,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const removeSaved = useCallback((id: string) => setData((d) => ({ ...d, saved: d.saved.filter((x) => x !== id) })), []);
   const setPremium = useCallback((v: boolean) => setData((d) => (d.premium === v ? d : { ...d, premium: v })), []);
   const markSeen = useCallback((id: string) => setData((d) => (d.seen.includes(id) ? d : { ...d, seen: [...d.seen, id] })), []);
-  const loadDemo = useCallback(() => {
-    const demo = makeDemoAttempts(buildPastExamSets());
-    setData((d) => ({
-      ...d,
-      profile: { ...d.profile, name: d.profile.name || 'Ayşe', examDate: d.profile.examDate ?? addDays(12), journeyStep: 3 },
-      attempts: demo,
-      lessons: { 'tc-isaretler': { step: 4, done: true }, 'tc-kavsak': { step: 0, done: false } },
-    }));
-  }, []);
   const resetAll = useCallback(() => setData((d) => ({ ...EMPTY, premium: d.premium })), []);
 
   const value = useMemo<Ctx>(
-    () => ({ ...data, ready, setProfile, addAttempt, setLesson, addSaved, removeSaved, setPremium, markSeen, loadDemo, resetAll }),
-    [data, ready, setProfile, addAttempt, setLesson, addSaved, removeSaved, setPremium, markSeen, loadDemo, resetAll],
+    () => ({ ...data, ready, setProfile, addAttempt, setLesson, addSaved, removeSaved, setPremium, markSeen, resetAll }),
+    [data, ready, setProfile, addAttempt, setLesson, addSaved, removeSaved, setPremium, markSeen, resetAll],
   );
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;
 }

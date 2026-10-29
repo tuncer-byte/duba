@@ -7,12 +7,9 @@
  */
 export const OFFICIAL_PAST_EXAMS = false;
 
-/** Demo verisi yükleme (yalnızca geliştirme/önizleme). Yayında kapalı. */
-export const ENABLE_DEMO = process.env.EXPO_PUBLIC_ENABLE_DEMO === '1' || (typeof __DEV__ !== 'undefined' && __DEV__);
-
 export const APP = {
   name: 'Duba',
-  version: '0.9.0',
+  version: '1.0.0',
   supportEmail: 'destek@duba.app',
   dailyGoalQuestions: 20,
 } as const;
@@ -24,7 +21,7 @@ export const PREMIUM = {
   /** RevenueCat: entitlement ve ürün kimlikleri (mağaza panelinde aynı adla oluşturun) */
   entitlement: 'premium',
   productId: 'duba_premium_lifetime',
-  /** RevenueCat public SDK anahtarları (boşsa satın alma devre dışı / test modu) */
+  /** RevenueCat public SDK anahtarları (boşsa satın alma devre dışı) */
   rcKeyIos: process.env.EXPO_PUBLIC_RC_IOS ?? '',
   rcKeyAndroid: process.env.EXPO_PUBLIC_RC_ANDROID ?? '',
   /** Ücretsiz kota */

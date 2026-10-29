@@ -3,12 +3,11 @@ import { TextInput, View } from 'react-native';
 import { Mascot } from '@/components/Mascot';
 import { inputStyle } from '@/components/ProfileSheet';
 import { Button, Pill, Screen, T } from '@/components/ui';
-import { ENABLE_DEMO } from '@/config';
 import { useApp } from '@/store/app';
 import { colors } from '@/theme';
 
 export default function Welcome() {
-  const { setProfile, loadDemo } = useApp();
+  const { setProfile } = useApp();
   const [name, setName] = useState('');
   return (
     <Screen contentStyle={{ gap: 18 }}>
@@ -27,7 +26,6 @@ export default function Welcome() {
         <Pill label="B sınıfı (otomobil)" />
       </View>
       <Button label="Başla" disabled={!name.trim()} onPress={() => setProfile({ name: name.trim() })} />
-      {ENABLE_DEMO && <Button kind="soft" label="Önce uygulamayı demo verisiyle gez" onPress={() => loadDemo()} />}
     </Screen>
   );
 }

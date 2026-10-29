@@ -1,8 +1,5 @@
 # Duba — Ehliyet Hazırlık (Türkiye, B sınıfı)
 
-Canlı sayfa: https://tuncer-byte.github.io/duba/
-
-
 Expo (React Native) + TypeScript + expo-router. Türkçe arayüz, tamamen çevrimdışı.
 
 ## Çalıştırma
@@ -27,7 +24,7 @@ npm test              # puanlama ve sınav mantığı
 - `src/components` — arayüz, simgeler, levha ve kavşak çizimleri
 - `src/data` — dersler, konular, sorular (`bank/`), konu anlatımları
 - `src/lib`, `src/store` — puanlama, istatistik, yerel kayıt
-- `src/config.ts` — özellik bayrakları (`OFFICIAL_PAST_EXAMS`, demo, destek e-postası)
+- `src/config.ts` — özellik bayrakları (`OFFICIAL_PAST_EXAMS`, premium, destek e-postası)
 - `design/` — tasarım PNG'leri
 - `docs/` — rakip analizi, içerik rehberi, eksikler, mağaza listesi
 

@@ -1,6 +1,6 @@
 # Eksikler ve durum listesi
 
-Son güncelleme: 29 Ekim 2026 · Sürüm 0.9.0
+Son güncelleme: 29 Ekim 2026 · Sürüm 1.0.0
 
 ## Tamamlananlar
 
@@ -14,7 +14,7 @@ Son güncelleme: 29 Ekim 2026 · Sürüm 0.9.0
 | Ehliyet süreci (5 adım) | ✅ |
 | Trafik işaretleri rehberi (33 levha) | ✅ |
 | Görselli sorular: 66 levha + 16 kavşak krokisi | ✅ |
-| 784 özgün soru (340 görselli), 3 bağımsız denetim turu | ✅ |
+| 1153 özgün soru (459 görselli), 3 bağımsız denetim turu | ✅ |
 | Karşılama, profil, sınav tarihi geri sayımı, günlük hedef, seri | ✅ |
 | Ayarlar, gizlilik/kullanım/içerik metinleri, geri bildirim | ✅ |
 | Hata ekranı, yerel kayıt (çevrimdışı), veri sıfırlama | ✅ |

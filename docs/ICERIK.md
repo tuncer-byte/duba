@@ -12,11 +12,11 @@ npm run typecheck
 
 | Ders | Konu | Soru |
 |---|---|---|
-| Trafik ve Çevre | 14 | 478 (levha, kroki, gösterge dahil) |
-| İlk Yardım | 8 | 123 |
-| Araç Tekniği | 7 | 126 |
-| Trafik Adabı | 4 | 57 |
-| **Toplam** | **33** | **784** (340 görselli) |
+| Trafik ve Çevre | 14 | 682 (levha, kroki, gösterge dahil) |
+| İlk Yardım | 8 | 191 |
+| Araç Tekniği | 7 | 198 |
+| Trafik Adabı | 4 | 82 |
+| **Toplam** | **33** | **1153** (459 görselli) |
 
 Tüm sorular **Duba için özgün yazılmıştır**; üç bağımsız denetim turundan geçmiştir (aşağıya bakın). Resmî çıkmış soru değildir.
 
