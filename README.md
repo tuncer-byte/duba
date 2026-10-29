@@ -1,4 +1,4 @@
-# Duba — Ehliyet Hazırlık (Türkiye, B sınıfı)
+# Duba: 2026 Ehliyet Soruları (Türkiye, B sınıfı)
 
 Expo (React Native) + TypeScript + expo-router. Türkçe arayüz, tamamen çevrimdışı.
 

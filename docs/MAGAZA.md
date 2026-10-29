@@ -1,7 +1,7 @@
 # Mağaza yayın listesi
 
 ## Kimlik
-- Ad: **Duba – Ehliyet Hazırlık**
+- Ad: **Duba: 2026 Ehliyet Soruları**
 - Paket / bundle: `com.tunadev58.duba` (gerekirse `app.json` içinde değiştirin)
 - Sürüm: 0.9.0 (`eas.json` production profili build numarasını otomatik artırır)
 
