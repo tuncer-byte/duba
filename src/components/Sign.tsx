@@ -1,9 +1,11 @@
 import React from 'react';
+import { Image } from 'react-native';
 import Svg, { Circle, Ellipse, G, Path, Polygon, Rect, Text as SvgText } from 'react-native-svg';
+import { SIGN_IMAGES } from './signImages';
 
 /**
- * Duba'nın kendi çizdiği trafik levhası illüstrasyonları (100x100 viewBox).
- * Standart levha şekil/renk dilini kullanır; resmî levha dosyalarının kopyası değildir.
+ * Trafik levhaları: resmî Türkiye levhalarının Wikimedia Commons görselleri (signImages.ts, CC BY-SA 4.0; bkz. credits.ts).
+ * Görseli bulunmayan birkaç levha için Duba'nın kendi çizdiği yedek illüstrasyonlar (100x100 viewBox) kullanılır.
  */
 const RED = '#D6181F';
 const BLUE = '#0B5CB8';
@@ -418,6 +420,10 @@ export const signById = (id: string) => SIGNS.find((s) => s.id === id);
 export function Sign({ id, size = 120 }: { id: string; size?: number }) {
   const def = signById(id);
   if (!def) return null;
+  const img = SIGN_IMAGES[id];
+  if (img) {
+    return <Image source={img} accessibilityLabel={`Trafik levhası: ${def.name}`} accessibilityIgnoresInvertColors resizeMode="contain" style={{ width: size, height: size }} />;
+  }
   return (
     <Svg width={size} height={size} viewBox="0 0 100 100" accessibilityLabel={`Trafik levhası: ${def.name}`}>
       {def.draw()}

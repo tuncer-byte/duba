@@ -1,7 +1,7 @@
 import * as Speech from 'expo-speech';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Image, Linking, Pressable, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icon } from '@/components/Icon';
 import { Mascot } from '@/components/Mascot';
@@ -11,6 +11,7 @@ import { SIGN_META } from '@/data/signMeta';
 import { Button, IconButton, T } from '@/components/ui';
 import { courseById, topicById } from '@/data/courses';
 import { lessonByTopic } from '@/data/lessons';
+import { PHOTOS } from '@/data/photos';
 import { QUESTIONS } from '@/data/questions';
 import { useApp } from '@/store/app';
 import { colors, fonts } from '@/theme';
@@ -152,6 +153,25 @@ export default function Lesson() {
               </View>
             )}
             {s.scene && <MediaView media={{ kind: 'scene', scene: s.scene }} />}
+            {s.photos && s.photos.length > 0 && (
+              <View style={{ gap: 12 }}>
+                {s.photos.map((key) => {
+                  const ph = PHOTOS[key];
+                  if (!ph) return null;
+                  return (
+                    <View key={key} style={{ backgroundColor: '#fff', borderWidth: 1, borderColor: colors.border, borderRadius: 20, overflow: 'hidden' }}>
+                      <Image source={ph.src} accessibilityLabel={ph.caption} accessibilityIgnoresInvertColors resizeMode="contain" style={{ width: '100%', height: 220, backgroundColor: '#fff' }} />
+                      <View style={{ padding: 12, gap: 4 }}>
+                        <T v="small" color={colors.ink2} style={{ fontSize: 13 * k, lineHeight: 18 * k }}>{ph.caption}</T>
+                        <Pressable onPress={() => Linking.openURL(ph.page).catch(() => {})} accessibilityRole="link" hitSlop={6}>
+                          <T v="caption" color={colors.mute}>Görsel: {ph.author} · {ph.license} · Wikimedia Commons</T>
+                        </Pressable>
+                      </View>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
             {s.items && (
               <View style={{ gap: 12 }}>
                 {s.items.map((it, i) => {

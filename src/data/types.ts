@@ -43,6 +43,8 @@ export interface LessonStep {
   signs?: string[];
   /** Adımda gösterilecek kavşak krokisi */
   scene?: import('./media').SceneSpec;
+  /** Adımda gösterilecek fotoğraf/şema anahtarları (photos.ts) */
+  photos?: string[];
   /** Kısa vurgu notu (sarı kutu) */
   warn?: string;
 }

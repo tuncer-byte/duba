@@ -54,6 +54,8 @@ export default function Settings() {
         <Row label="Kullanım koşulları" onPress={() => setDoc('terms')} />
         <View style={{ height: 1, backgroundColor: colors.border }} />
         <Row label="İçerik hakkında" sub="Sorular nereden geliyor?" onPress={() => setDoc('content')} />
+        <View style={{ height: 1, backgroundColor: colors.border }} />
+        <Row label="Görsel kaynakları" sub="Levha ve araç görselleri · lisanslar" onPress={() => router.push('/gorseller')} />
       </Card>
       <Button kind="soft" label="Geri bildirim gönder" onPress={() => Linking.openURL(`mailto:${APP.supportEmail}?subject=Duba%20geri%20bildirim`).catch(() => {})} />
       <T v="caption" color={colors.mute} style={{ textAlign: 'center' }}>{APP.name} · sürüm {APP.version}</T>

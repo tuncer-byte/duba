@@ -275,6 +275,12 @@ import { EXT_ATTA } from './lessons/ext-at-ta';
 // Sonraki dosyalar aynı konu kimliğiyle öncekilerin yerine geçer (genişletilmiş anlatımlar).
 const merged = new Map<string, Lesson>();
 for (const l of [...BASE, ...LESSONS_TC, ...LESSONS_OTHER, ...EXT_TC, ...EXT_TC2, ...EXT_IY, ...EXT_ATTA]) merged.set(l.topicId, l);
-export const LESSONS: Lesson[] = [...merged.values()];
+import { STEP_PHOTOS } from './photos';
+
+// Fotoğraf/şema eşlemesi (photos.ts) adım başlığına göre uygulanır.
+export const LESSONS: Lesson[] = [...merged.values()].map((l) => {
+  const sp = STEP_PHOTOS[l.topicId];
+  return sp ? { ...l, steps: l.steps.map((s) => (sp[s.title] ? { ...s, photos: sp[s.title] } : s)) } : l;
+});
 
 export const lessonByTopic = (topicId: string) => LESSONS.find((l) => l.topicId === topicId);

@@ -58,12 +58,14 @@ export default function PremiumScreen() {
 
   if (premium) {
     return (
-      <Screen contentStyle={{ alignItems: 'center', gap: 14, paddingTop: 40 }}>
-        <Mascot name="cheer" height={190} />
-        <T v="h1" style={{ textAlign: 'center' }}>Premium aktif</T>
-        <T v="body" color={colors.ink2} style={{ textAlign: 'center' }}>Teşekkürler! Tüm sorulara ve görsellere sınırsız erişimin var.</T>
-        <Button label="Çalışmaya devam et" onPress={done} style={{ alignSelf: 'stretch', marginTop: 8 }} />
-      </Screen>
+      <View style={{ flex: 1, backgroundColor: colors.bg, paddingHorizontal: 24, paddingTop: Math.max(insets.top, 16), paddingBottom: Math.max(insets.bottom, 16) + 8 }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 14 }}>
+          <Mascot name="cheer" height={Math.max(150, Math.min(240, height * 0.28))} />
+          <T v="h1" style={{ textAlign: 'center' }}>Premium aktif</T>
+          <T v="body" color={colors.ink2} style={{ textAlign: 'center' }}>Teşekkürler! Tüm sorulara ve görsellere sınırsız erişimin var.</T>
+        </View>
+        <Button label="Çalışmaya devam et" onPress={done} />
+      </View>
     );
   }
 
