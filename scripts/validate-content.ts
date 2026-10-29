@@ -1,4 +1,5 @@
 /* İçerik bütünlüğü: npm run validate */
+import './asset-stub';
 import { COURSES, TOPICS } from '../src/data/courses';
 import { LESSONS } from '../src/data/lessons';
 import { QUESTIONS } from '../src/data/questions';
