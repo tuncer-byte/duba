@@ -1,14 +1,15 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, View, useWindowDimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icon } from '@/components/Icon';
 import { Mascot } from '@/components/Mascot';
-import { Bar, Button, Screen, T } from '@/components/ui';
+import { Button, Screen, T } from '@/components/ui';
 import { PREMIUM } from '@/config';
 import { freeStatus } from '@/lib/premium';
 import { buyPremium, restorePremium, storePrice, testPurchaseEnabled } from '@/lib/purchases';
 import { useApp } from '@/store/app';
-import { colors } from '@/theme';
+import { colors, fonts } from '@/theme';
 
 const COPY: Record<string, { title: string; sub: string }> = {
   total: { title: 'Ücretsiz sorularını bitirdin', sub: 'Harika gidiyorsun! Tüm sorulara sınırsız erişmek için Premium\'a geç.' },
@@ -17,10 +18,9 @@ const COPY: Record<string, { title: string; sub: string }> = {
   default: { title: 'Duba Premium', sub: 'Tek ödeme, ömür boyu sınırsız erişim.' },
 };
 const BENEFITS = [
-  'Tüm soru bankasına sınırsız erişim',
-  'Tüm görselli sorular: kavşak, levha, gösterge',
-  'Sınırsız deneme sınavı ve yanlış tekrarı',
-  'Gelecekte eklenecek yeni sorular dahil',
+  'Tüm sorulara sınırsız erişim',
+  'Tüm görselli sorular',
+  'Sınırsız deneme ve yanlış tekrarı',
   'Abonelik yok, reklam yok',
 ];
 
@@ -31,6 +31,8 @@ export default function PremiumScreen() {
   const [price, setPrice] = useState<string>(PREMIUM.fallbackPrice);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const { height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   const st = freeStatus(seen);
   const c = COPY[reason ?? 'default'] ?? COPY.default;
   const test = testPurchaseEnabled();
@@ -67,60 +69,52 @@ export default function PremiumScreen() {
     );
   }
 
+  const mh = Math.max(84, Math.min(170, (height - 480) * 0.5));
   return (
-    <Screen contentStyle={{ gap: 14 }}>
-      <View style={{ alignItems: 'flex-end' }}>
+    <View style={{ flex: 1, backgroundColor: colors.bg, paddingTop: 14, paddingHorizontal: 20, paddingBottom: Math.max(insets.bottom, 14) + 4, justifyContent: 'space-between' }}>
+      <View style={{ alignItems: 'flex-end', height: 40 }}>
         <Pressable accessibilityRole="button" accessibilityLabel="Kapat" onPress={done} hitSlop={12} style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: '#fff', borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center' }}>
           <Icon name="x" size={20} color={colors.ink} />
         </Pressable>
       </View>
-      <View style={{ alignItems: 'center', gap: 8 }}>
-        <Mascot name={reason === 'result' ? 'happy' : 'cheer'} height={150} />
-        <T v="h1" style={{ textAlign: 'center' }}>{c.title}</T>
-        <T v="body" color={colors.ink2} style={{ textAlign: 'center' }}>{c.sub}</T>
+
+      <View style={{ alignItems: 'center', gap: 4 }}>
+        <Mascot name={reason === 'result' ? 'happy' : 'wink'} height={mh} />
+        <T v="h1" style={{ textAlign: 'center', marginTop: 4 }}>{c.title}</T>
+        <T v="small" color={colors.ink2} style={{ textAlign: 'center' }}>{c.sub}</T>
       </View>
 
-      <View style={{ backgroundColor: '#fff', borderRadius: 22, borderWidth: 1, borderColor: colors.border, padding: 16, gap: 10 }}>
+      <View style={{ backgroundColor: '#fff', borderRadius: 20, borderWidth: 1, borderColor: colors.border, paddingVertical: 12, paddingHorizontal: 16, gap: 9 }}>
         {BENEFITS.map((b) => (
           <View key={b} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-            <View style={{ width: 22, height: 22, borderRadius: 11, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' }}>
-              <Icon name="check" size={14} color={colors.primary} stroke={3} />
+            <View style={{ width: 20, height: 20, borderRadius: 10, backgroundColor: colors.primarySoft, alignItems: 'center', justifyContent: 'center' }}>
+              <Icon name="check" size={12} color={colors.primary} stroke={3} />
             </View>
             <T v="body" style={{ flex: 1 }}>{b}</T>
           </View>
         ))}
       </View>
 
-      <View style={{ backgroundColor: colors.primarySoft, borderRadius: 22, padding: 16, gap: 8 }}>
-        <T v="label" color={colors.primary}>ÜCRETSİZ HAKKIN</T>
-        <View style={{ gap: 6 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <T v="small" color={colors.ink2}>Soru</T>
-            <T v="small" color={colors.ink2}>{Math.min(st.usedTotal, PREMIUM.freeQuestions)} / {PREMIUM.freeQuestions}</T>
-          </View>
-          <Bar value={Math.min(1, st.usedTotal / PREMIUM.freeQuestions)} track="#fff" />
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
-            <T v="small" color={colors.ink2}>Görselli soru</T>
-            <T v="small" color={colors.ink2}>{Math.min(st.usedVisual, PREMIUM.freeVisual)} / {PREMIUM.freeVisual}</T>
-          </View>
-          <Bar value={Math.min(1, st.usedVisual / PREMIUM.freeVisual)} track="#fff" />
+      <View style={{ backgroundColor: colors.primarySoft, borderRadius: 14, paddingVertical: 9, paddingHorizontal: 14, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <T v="caption" color={colors.primary} style={{ fontFamily: fonts.bodyBold }}>ÜCRETSİZ HAKKIN</T>
+        <T v="caption" color={colors.ink2}>Soru {Math.min(st.usedTotal, PREMIUM.freeQuestions)}/{PREMIUM.freeQuestions} · Görselli {Math.min(st.usedVisual, PREMIUM.freeVisual)}/{PREMIUM.freeVisual}</T>
+      </View>
+
+      <View style={{ gap: 10 }}>
+        <View style={{ alignItems: 'center' }}>
+          <T v="display" color={colors.primary} style={{ fontSize: 34, lineHeight: 40 }}>{price}</T>
+          <T v="caption" color={colors.mute}>Tek seferlik ödeme · ömür boyu</T>
         </View>
+        {msg && <T v="caption" color={colors.red} style={{ textAlign: 'center' }}>{msg}</T>}
+        <Button label={busy ? 'İşleniyor…' : test ? 'Premium\'a geç (test)' : 'Premium\'a geç'} onPress={buy} disabled={busy} />
+        <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 22 }}>
+          <Pressable onPress={restore} accessibilityRole="button" hitSlop={8}><T v="small" color={colors.primary} style={{ fontFamily: fonts.bodySemi }}>Satın alımı geri yükle</T></Pressable>
+          <Pressable onPress={done} accessibilityRole="button" hitSlop={8}><T v="small" color={colors.mute}>Şimdilik değil</T></Pressable>
+        </View>
+        <T v="caption" color={colors.faint} style={{ textAlign: 'center', fontSize: 10.5, lineHeight: 14 }}>
+          Ödeme App Store / Google Play hesabından tahsil edilir. Abonelik değildir; yenilenmez.
+        </T>
       </View>
-
-      <View style={{ alignItems: 'center', gap: 2 }}>
-        <T v="display" color={colors.primary}>{price}</T>
-        <T v="small" color={colors.mute}>Tek seferlik ödeme · ömür boyu</T>
-      </View>
-
-      {msg && <T v="small" color={colors.red} style={{ textAlign: 'center' }}>{msg}</T>}
-      <Button label={busy ? 'İşleniyor…' : test ? 'Premium\'a geç (test)' : 'Premium\'a geç'} onPress={buy} disabled={busy} />
-      <Button kind="soft" label="Satın alımı geri yükle" onPress={restore} disabled={busy} />
-      <Pressable onPress={done} accessibilityRole="button" style={{ alignItems: 'center', paddingVertical: 10 }}>
-        <T v="body" color={colors.mute}>Şimdilik ücretsiz devam et</T>
-      </Pressable>
-      <T v="caption" color={colors.faint} style={{ textAlign: 'center' }}>
-        Ödeme, onayında App Store / Google Play hesabından tahsil edilir. Abonelik değildir; yenilenmez.
-      </T>
-    </Screen>
+    </View>
   );
 }
