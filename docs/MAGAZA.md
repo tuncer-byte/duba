@@ -2,7 +2,7 @@
 
 ## Kimlik
 - Ad: **Duba – Ehliyet Hazırlık**
-- Paket / bundle: `com.duba.app` (gerekirse `app.json` içinde değiştirin)
+- Paket / bundle: `com.tunadev58.duba` (gerekirse `app.json` içinde değiştirin)
 - Sürüm: 0.9.0 (`eas.json` production profili build numarasını otomatik artırır)
 
 ## Kısa açıklama (≤80 karakter)
@@ -15,7 +15,7 @@ Not: Sorular Duba için özgün hazırlanmıştır; resmî sınav soruları değ
 ## Yayın öncesi kontrol listesi
 - [ ] Apple Developer ve Google Play Console hesapları
 - [ ] `npx eas login` · `npx eas build -p android --profile production` / `-p ios`
-- [ ] Ekran görüntüleri (6,7" ve 6,1" iPhone; Android telefon): ana sayfa, sınav, görselli soru, konu anlatımı, ilerleme
+- [x] Ekran görüntüleri: `store/screenshots/ios` (1290×2796, iPhone 6,9") ve `store/screenshots/android` (1080×1920), 6'şar adet 3B telefon mockup'ı. Yeniden üretmek için: ekranları `store/raw/` içine 1170×2478 koy, `python store/render.py` çalıştır.
 - [ ] Gizlilik politikası için herkese açık URL (uygulama içi metin `src/data/legal.ts`; web'de yayınlanmalı)
 - [ ] Veri güvenliği formu: veri toplanmıyor, cihaz içi depolama
 - [ ] Yaş derecelendirmesi: herkes

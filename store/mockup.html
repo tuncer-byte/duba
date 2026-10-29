@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Duba mağaza görseli</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800;900&display=swap" rel="stylesheet">
+<style>
+  /* Mağaza görseli şablonu. store/render.py her slayt için ?i=<sıra>&w=&h= ile açar. */
+  :root { --green:#168D3F; --greenInk:#17512F; --peach:#FCEBDF; --mint:#E2F3E8; --ink:#16211F; --amber:#F5B301; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:var(--W); height:var(--H); overflow:hidden; background:#fff; }
+  body { font-family:'Inter',sans-serif; position:relative; }
+  .bg { position:absolute; inset:0; }
+  /* Yol şeridi: duba temasıyla bağlanan düz, kesikli çizgi bandı */
+  .road { position:absolute; left:-20%; width:140%; height:calc(var(--s)*230px); top:var(--roadTop);
+          transform:rotate(var(--roadRot)); background:var(--roadBg); }
+  .road::after { content:''; position:absolute; left:0; right:0; top:50%; height:calc(var(--s)*22px); margin-top:calc(var(--s)*-11px);
+          background:repeating-linear-gradient(90deg, var(--dash) 0 calc(var(--s)*120px), transparent calc(var(--s)*120px) calc(var(--s)*200px)); }
+  .head { position:absolute; left:calc(var(--s)*96px); right:calc(var(--s)*96px); top:var(--headTop); color:var(--fg); }
+  .kick { font-weight:800; font-size:calc(var(--s)*54px); color:var(--accent); margin-bottom:calc(var(--s)*22px); }
+  h1 { font-weight:900; font-size:calc(var(--s)*var(--hs)); line-height:1.02; letter-spacing:-0.035em; white-space:pre-line; }
+  .stage { position:absolute; left:0; right:0; top:var(--phoneTop); display:flex; justify-content:center; perspective:calc(var(--s)*2600px); }
+  .phone { position:relative; width:var(--pw); aspect-ratio:390/844; transform-style:preserve-3d; transform:var(--tilt); }
+  .layer { position:absolute; inset:0; border-radius:calc(var(--pw)*0.135); background:var(--edge); }
+  .front { position:absolute; inset:0; border-radius:calc(var(--pw)*0.135); background:var(--ink); padding:calc(var(--pw)*0.035); transform:translateZ(0); }
+  .screen { width:100%; height:100%; border-radius:calc(var(--pw)*0.105); overflow:hidden; display:flex; flex-direction:column; background:var(--sbBg); }
+  .sb { flex:none; height:calc(var(--pw)*0.125); display:flex; align-items:center; justify-content:space-between; padding:0 calc(var(--pw)*0.09) 0 calc(var(--pw)*0.11);
+        font-weight:800; font-size:calc(var(--pw)*0.042); color:var(--ink); }
+  .sb svg { height:calc(var(--pw)*0.032); width:auto; display:block; }
+  .screen img { flex:1; min-height:0; width:100%; display:block; object-fit:cover; object-position:top; }
+  .island { position:absolute; top:calc(var(--pw)*0.06); left:50%; width:calc(var(--pw)*0.28); height:calc(var(--pw)*0.075); margin-left:calc(var(--pw)*-0.14);
+            border-radius:999px; background:var(--ink); }
+  .mascot { position:absolute; width:var(--mw); left:var(--mx); top:var(--my); transform:rotate(var(--mr)); }
+</style>
+</head>
+<body>
+<div class="bg"></div><div class="road"></div>
+<div class="head"><div class="kick"></div><h1></h1></div>
+<div class="stage"><div class="phone" id="phone"><div class="front"><div class="screen"><div class="sb"><span>9:41</span><svg viewBox="0 0 70 14"><rect x="0" y="9" width="3.5" height="5" rx="1" fill="#16211F"/><rect x="5.5" y="6" width="3.5" height="8" rx="1" fill="#16211F"/><rect x="11" y="3" width="3.5" height="11" rx="1" fill="#16211F"/><rect x="16.5" y="0" width="3.5" height="14" rx="1" fill="#16211F"/><rect x="40" y="1" width="25" height="12" rx="3.5" fill="none" stroke="#16211F" stroke-width="1.6"/><rect x="42.5" y="3.5" width="18" height="7" rx="1.8" fill="#16211F"/><rect x="66.5" y="5" width="2" height="4" rx="1" fill="#16211F"/></svg></div><img id="shot"></div><div class="island"></div></div></div></div>
+<img class="mascot" id="mascot">
+<script>
+const SLIDES = [
+  { shot:'home',      bg:'#168D3F', fg:'#FFFFFF', accent:'#FCEBDF', road:'#12773A', dash:'#F5B301', kick:'B sınıfı ehliyet',  title:'Ehliyet sınavına\nkolayca hazırlan', mascot:'m-cheer', side:'r', tilt:-1 },
+  { shot:'soru',      bg:'#FCEBDF', fg:'#17512F', accent:'#B4540A', road:'#F6D9C4', dash:'#FFFFFF', kick:'Gerçek sınav düzeni', title:'50 soru\n45 dakika',              mascot:null,      side:'l', tilt:1 },
+  { shot:'konular',   bg:'#E2F3E8', fg:'#17512F', accent:'#168D3F', road:'#CDEAD7', dash:'#FFFFFF', kick:'Konu anlatımı',     title:'33 konu,\nsade anlatım',            mascot:'m-study', side:'l', tilt:-1 },
+  { shot:'konu',      bg:'#168D3F', fg:'#FFFFFF', accent:'#FCEBDF', road:'#12773A', dash:'#F5B301', kick:'Kısa bölümler',     title:'Her konu\nadım adım',              mascot:null,      side:'r', tilt:1 },
+  { shot:'isaretler', bg:'#FCEBDF', fg:'#17512F', accent:'#B4540A', road:'#F6D9C4', dash:'#FFFFFF', kick:'Trafik işaretleri', title:'Levhaları şekil\nve renkten tanı',  mascot:'m-think', side:'r', tilt:-1 },
+  { shot:'premium',   bg:'#E2F3E8', fg:'#17512F', accent:'#168D3F', road:'#CDEAD7', dash:'#FFFFFF', kick:'Reklam yok',        title:'Tek ödeme,\nabonelik yok',          mascot:'m-happy', side:'l', tilt:1 },
+];
+const q = new URLSearchParams(location.search);
+const i = +q.get('i') || 0, W = +q.get('w') || 1290, H = +q.get('h') || 2796;
+const d = SLIDES[i], s = W / 1290, r = document.documentElement.style;
+const tall = H / W > 2;                      // iPhone 6,9" oranı; Play 16:9 daha basık
+const headTop = (tall ? 190 : 120) * s;
+const hs = tall ? 132 : 118;
+const phoneTop = headTop + (54 + 22 + hs * 2.1 + (tall ? 130 : 80)) * s;
+const pw = Math.min(W * (tall ? 0.70 : 0.60), (H - phoneTop + H * (tall ? 0.10 : 0.16)) * 390 / 844);
+Object.entries({
+  '--W': W + 'px', '--H': H + 'px', '--s': s, '--hs': hs + 'px', '--headTop': headTop + 'px', '--phoneTop': phoneTop + 'px', '--pw': pw + 'px',
+  '--fg': d.fg, '--sbBg': d.shot === 'soru' ? '#FFFFFF' : '#F6FAF7', '--accent': d.accent, '--roadBg': d.road, '--dash': d.dash, '--edge': '#2B3836',
+  '--roadTop': (phoneTop + pw * 0.9) + 'px', '--roadRot': (d.tilt * -9) + 'deg',
+  '--tilt': `rotateY(${d.tilt * 22}deg) rotateX(8deg) rotateZ(${d.tilt * -3}deg)`,
+}).forEach(([k, v]) => r.setProperty(k, v));
+document.querySelector('.bg').style.background = d.bg;
+document.querySelector('.kick').textContent = d.kick;
+document.querySelector('h1').textContent = d.title;
+document.getElementById('shot').src = `raw/${d.shot}.png`;
+// Telefon kalınlığı: arkaya dizilen düz renkli katmanlar (gölge değil, gövde kenarı)
+const phone = document.getElementById('phone'), depth = Math.round(pw * 0.045);
+for (let z = depth; z > 0; z -= 2) { const l = document.createElement('div'); l.className = 'layer'; l.style.transform = `translateZ(${-z}px)`; phone.prepend(l); }
+const m = document.getElementById('mascot');
+if (d.mascot) {
+  m.src = `../site/img/${d.mascot}.png`;
+  const mw = pw * 0.52;
+  r.setProperty('--mw', mw + 'px');
+  r.setProperty('--my', (H - mw * 1.08) + 'px');
+  r.setProperty('--mx', d.side === 'r' ? (W - mw * 0.92) + 'px' : (-mw * 0.08) + 'px');
+  r.setProperty('--mr', (d.side === 'r' ? -8 : 8) + 'deg');
+} else m.remove();
+</script>
+</body>
+</html>

@@ -8,6 +8,7 @@ import { Platform, Pressable, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AnimatedSplash, SPLASH_GREEN } from '@/components/AnimatedSplash';
 import { checkPremium, initPurchases } from '@/lib/purchases';
+import { initUpdates } from '@/lib/updates';
 import { AppProvider, useApp } from '@/store/app';
 import { colors } from '@/theme';
 
@@ -60,6 +61,7 @@ export default function RootLayout() {
   });
   const [splash, setSplash] = React.useState(true);
   useEffect(() => { if (loaded) SplashScreen.hideAsync().catch(() => {}); }, [loaded]);
+  useEffect(() => { initUpdates().catch(() => {}); }, []);
   if (!loaded) return <View style={{ flex: 1, backgroundColor: SPLASH_GREEN }} />;
   return (
     <SafeAreaProvider>

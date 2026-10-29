@@ -1,11 +1,12 @@
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { Linking, Pressable, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, Linking, Pressable, View } from 'react-native';
 import { Icon } from '@/components/Icon';
 import { ProfileSheet } from '@/components/ProfileSheet';
 import { Button, Card, Header, Screen, T } from '@/components/ui';
 import { APP } from '@/config';
 import { LEGAL } from '@/data/legal';
+import { buildLabel, Channel, getChannel, otaEnabled, pullUpdate, setChannel } from '@/lib/updates';
 import { useApp } from '@/store/app';
 import { colors } from '@/theme';
 
@@ -26,6 +27,29 @@ export default function Settings() {
   const { profile, attempts, saved, premium } = useApp();
   const [sheet, setSheet] = useState(false);
   const [doc, setDoc] = useState<keyof typeof LEGAL | null>(null);
+  const [channel, setCh] = useState<Channel>('production');
+  const taps = useRef({ n: 0, t: 0 });
+  useEffect(() => { getChannel().then(setCh); }, []);
+
+  // Gizli test girişi: sürüm yazısına 3 saniye içinde 7 kez dokun.
+  const onVersionTap = () => {
+    if (!otaEnabled()) return;
+    const now = Date.now();
+    taps.current = now - taps.current.t < 3000 ? { n: taps.current.n + 1, t: now } : { n: 1, t: now };
+    if (taps.current.n < 7) return;
+    taps.current = { n: 0, t: 0 };
+    const next: Channel = channel === 'test' ? 'production' : 'test';
+    Alert.alert(next === 'test' ? 'Test sürümüne geç' : 'Canlı sürüme dön', 'Uygulama yeniden başlayacak.', [
+      { text: 'Vazgeç', style: 'cancel' },
+      { text: 'Geç', onPress: () => setChannel(next) },
+    ]);
+  };
+
+  const onPull = async () => {
+    const r = await pullUpdate(true);
+    if (r === 'none') Alert.alert('Güncel', 'En son test sürümünü kullanıyorsun.');
+    if (r === 'error') Alert.alert('Bağlanılamadı', 'İnternet bağlantını kontrol edip tekrar dene.');
+  };
 
   if (doc) {
     return (
@@ -58,7 +82,12 @@ export default function Settings() {
         <Row label="Görsel kaynakları" sub="Levha ve araç görselleri · lisanslar" onPress={() => router.push('/gorseller')} />
       </Card>
       <Button kind="soft" label="Geri bildirim gönder" onPress={() => Linking.openURL(`mailto:${APP.supportEmail}?subject=Duba%20geri%20bildirim`).catch(() => {})} />
-      <T v="caption" color={colors.mute} style={{ textAlign: 'center' }}>{APP.name} · sürüm {APP.version}</T>
+      {channel === 'test' && <Button kind="soft" icon="forward" label="Test güncellemesini şimdi al" onPress={onPull} />}
+      <Pressable onPress={onVersionTap} accessibilityLabel={`${APP.name} sürüm ${APP.version}`}>
+        <T v="caption" color={channel === 'test' ? colors.primary : colors.mute} style={{ textAlign: 'center' }}>
+          {APP.name} · sürüm {APP.version}{buildLabel(channel) ? ` · ${buildLabel(channel)}` : ''}
+        </T>
+      </Pressable>
       <ProfileSheet visible={sheet} onClose={() => setSheet(false)} />
     </Screen>
   );

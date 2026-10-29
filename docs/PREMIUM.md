@@ -11,8 +11,9 @@
 ## Sizden gerekenler (Firebase gerekmez)
 1. **Apple Developer** ve **Google Play Console** hesapları.
 2. Her iki mağazada **non-consumable (bir kez satın alınan)** ürün: `duba_premium_lifetime`, fiyat ₺99.
-3. **RevenueCat** hesabı: proje, iOS ve Android uygulamaları, entitlement `premium`, ürünü entitlement'a bağlayın, bir Offering oluşturup `lifetime` paketi olarak ekleyin.
+3. **RevenueCat** hesabı: proje, iOS ve Android uygulamaları, entitlement `duba_pro`, ürünü entitlement'a bağlayın, bir Offering oluşturup `lifetime` paketi olarak ekleyin.
 4. RevenueCat **public SDK anahtarları**. Yapı alırken ortam değişkeni olarak verin: `EXPO_PUBLIC_RC_IOS`, `EXPO_PUBLIC_RC_ANDROID` (EAS secrets).
+   - Geliştirmede RevenueCat **Test Store** anahtarı (`test_...`) `.env.local` içinde durur (git'e girmez). `test_` anahtarı yalnız `__DEV__` yapısında devreye girer, mağaza yapısında kod onu yok sayar; production için `appl_` anahtarı EAS ortamına konur.
 5. Ödeme SDK'sı yerel modül kullandığı için **Expo Go'da çalışmaz**; `eas build --profile development` ile geliştirme yapısı gerekir. Anahtarsız/Expo Go'da satın alma "kullanılamıyor" der.
 6. Gizlilik/mağaza metinlerinde satın alma ve geri yükleme ifadeleri.
 

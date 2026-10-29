@@ -19,7 +19,7 @@ export const PREMIUM = {
   /** Mağazadan fiyat alınamazsa gösterilen yedek fiyat */
   fallbackPrice: '₺99',
   /** RevenueCat: entitlement ve ürün kimlikleri (mağaza panelinde aynı adla oluşturun) */
-  entitlement: 'premium',
+  entitlement: 'duba_pro',
   productId: 'duba_premium_lifetime',
   /** RevenueCat public SDK anahtarları (boşsa satın alma devre dışı) */
   rcKeyIos: process.env.EXPO_PUBLIC_RC_IOS ?? '',

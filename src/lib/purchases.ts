@@ -16,9 +16,12 @@ export async function initPurchases(): Promise<void> {
   if (ready || Platform.OS === 'web') return;
   const key = Platform.OS === 'ios' ? PREMIUM.rcKeyIos : PREMIUM.rcKeyAndroid;
   if (!key) return;
+  // Test Store anahtarı (test_) yalnızca geliştirme yapısında; mağaza yapısında asla kullanılmaz.
+  if (key.startsWith('test_') && !__DEV__) return;
   try {
     const mod = require('react-native-purchases');
     P = (mod.default ?? mod) as PurchasesModule;
+    if (__DEV__) P.setLogLevel(mod.LOG_LEVEL.VERBOSE);
     P.configure({ apiKey: key });
     ready = true;
   } catch { P = null; ready = false; }

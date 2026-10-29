@@ -1,0 +1,22 @@
+name: Kontrol
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Tip denetimi, içerik doğrulama, mantık testleri, SDK paket uyumu ve expo-doctor
+      - run: npm run check
+      # Yalnız uygulamaya giren paketlerde yüksek riskli açık varsa uyarır
+      - run: npm run audit
+        continue-on-error: true
