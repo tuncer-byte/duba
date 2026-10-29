@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { Icon } from '@/components/Icon';
+import { CourseIcon } from '@/components/CourseIcon';
 import { Mascot } from '@/components/Mascot';
 import { Bar, Card, Screen, T } from '@/components/ui';
 import { COURSES, TOPICS, topicsByCourse } from '@/data/courses';
@@ -47,8 +48,8 @@ export default function Topics() {
             return (
               <Card key={c.id} onPress={() => router.push(`/ders/${c.id}`)} style={{ gap: 14 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
-                  <View style={{ width: 56, height: 56, borderRadius: 18, backgroundColor: col.bg, alignItems: 'center', justifyContent: 'center' }}>
-                    <T v="title" color={col.fg}>{c.short}</T>
+                  <View style={{ width: 84, height: 84, alignItems: 'center', justifyContent: 'center' }}>
+                    <CourseIcon name={c.id} size={80} />
                   </View>
                   <View style={{ flex: 1 }}>
                     <T v="title">{c.name}</T>
@@ -62,8 +63,8 @@ export default function Topics() {
             );
           })}
           <Card onPress={() => router.push('/isaretler')} style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
-            <View style={{ width: 48, height: 48, borderRadius: 16, backgroundColor: colors.amberSoft, alignItems: 'center', justifyContent: 'center' }}>
-              <Icon name="alert" size={26} color={colors.amber} />
+            <View style={{ width: 84, height: 84, alignItems: 'center', justifyContent: 'center' }}>
+              <CourseIcon name="isaret" size={80} />
             </View>
             <View style={{ flex: 1 }}>
               <T v="title">Trafik işaretleri rehberi</T>

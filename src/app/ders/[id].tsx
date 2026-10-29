@@ -1,6 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
+import { CourseIcon } from '@/components/CourseIcon';
 import { TopicRow } from '@/components/TopicRow';
 import { Bar, Button, Card, Header, Screen, T } from '@/components/ui';
 import { COURSES, topicsByCourse } from '@/data/courses';
@@ -22,9 +23,12 @@ export default function CourseTopics() {
     <Screen>
       <Header title={course.name} eyebrow="Ders" onBack={() => router.back()} />
       <Card style={{ gap: 12 }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <T v="body" color={colors.ink2}>Sınavda {course.examQuestions} soru</T>
-          <T v="bodyStrong">{done} / {ts.length} konu</T>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
+          <CourseIcon name={course.id} size={84} />
+          <View style={{ flex: 1, gap: 2 }}>
+            <T v="body" color={colors.ink2}>Sınavda {course.examQuestions} soru</T>
+            <T v="bodyStrong">{done} / {ts.length} konu</T>
+          </View>
         </View>
         <Bar value={ts.length ? done / ts.length : 0} color={col.fg} height={8} />
         <Button kind="soft" label="Bu dersten 20 soru çöz" onPress={() => router.push(`/sinav/ders-${course.id}`)} />
